@@ -21,72 +21,59 @@ export async function getNotifications(employeeId?: string): Promise<Notificatio
       const raw = await fs.readFile(NOTIFICATIONS_FILE, 'utf-8');
       const data = JSON.parse(raw);
       list = data.notifications || [];
-    } catch {
-      return [];
-    }
+    } catch { return []; }
   }
-  if (employeeId) list = list.filter((n: Notification) => n.employeeId === employeeId);
+  if (employeeId) list = list.filter((n) => n.employeeId === employeeId);
   return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 }
 
 export async function createNotification(notif: Omit<Notification, 'id' | 'createdAt' | 'isRead'>): Promise<Notification> {
   const existing = await getNotifications();
-  const newNotif: Notification = {
-    ...notif,
-    id: `notif-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-    isRead: false,
-    createdAt: new Date().toISOString(),
-  };
+  const newNotif: Notification = { ...notif, id: 
+otif--, isRead: false, createdAt: new Date().toISOString() };
   existing.push(newNotif);
-
-  if (await isDbAvailable()) {
-    await pgSetCollection('notifications', { notifications: existing });
-  } else {
-    await ensureDataDir();
-    await fs.writeFile(NOTIFICATIONS_FILE, JSON.stringify({ notifications: existing }, null, 2), 'utf-8');
-  }
+  if (await isDbAvailable()) { await pgSetCollection('notifications', { notifications: existing }); }
+  else { await ensureDataDir(); await fs.writeFile(NOTIFICATIONS_FILE, JSON.stringify({ notifications: existing }, null, 2), 'utf-8'); }
   return newNotif;
 }
 
-export async function markAsRead(id: string): Promise<Notification | null> {
+export async function markAsRead(id: string, ownerId?: string): Promise<Notification | null> {
   const existing = await getNotifications();
-  const idx = existing.findIndex((n) => n.id === id);
+  const idx = existing.findIndex((n) => n.id === id && (!ownerId || n.employeeId === ownerId));
   if (idx === -1) return null;
   existing[idx].isRead = true;
-
-  if (await isDbAvailable()) {
-    await pgSetCollection('notifications', { notifications: existing });
-  } else {
-    await ensureDataDir();
-    await fs.writeFile(NOTIFICATIONS_FILE, JSON.stringify({ notifications: existing }, null, 2), 'utf-8');
-  }
+  if (await isDbAvailable()) { await pgSetCollection('notifications', { notifications: existing }); }
+  else { await ensureDataDir(); await fs.writeFile(NOTIFICATIONS_FILE, JSON.stringify({ notifications: existing }, null, 2), 'utf-8'); }
   return existing[idx];
 }
 
 export async function markAllAsRead(employeeId?: string): Promise<void> {
   const existing = await getNotifications();
-  for (const n of existing) {
-    if (!employeeId || n.employeeId === employeeId) n.isRead = true;
-  }
-
-  if (await isDbAvailable()) {
-    await pgSetCollection('notifications', { notifications: existing });
-  } else {
-    await ensureDataDir();
-    await fs.writeFile(NOTIFICATIONS_FILE, JSON.stringify({ notifications: existing }, null, 2), 'utf-8');
-  }
+  for (const n of existing) { if (!employeeId || n.employeeId === employeeId) n.isRead = true; }
+  if (await isDbAvailable()) { await pgSetCollection('notifications', { notifications: existing }); }
+  else { await ensureDataDir(); await fs.writeFile(NOTIFICATIONS_FILE, JSON.stringify({ notifications: existing }, null, 2), 'utf-8'); }
 }
 
-export async function deleteNotification(id: string): Promise<boolean> {
+export async function deleteNotification(id: string, ownerId?: string): Promise<boolean> {
   const existing = await getNotifications();
-  const filtered = existing.filter((n) => n.id !== id);
-  if (filtered.length === existing.length) return false;
-
-  if (await isDbAvailable()) {
-    await pgSetCollection('notifications', { notifications: filtered });
-  } else {
-    await ensureDataDir();
-    await fs.writeFile(NOTIFICATIONS_FILE, JSON.stringify({ notifications: filtered }, null, 2), 'utf-8');
+  const filtered = existing.filter((n) => n.id !== id && (!ownerId || n.employeeId !== ownerId));
+  if (ownerId) {
+    const target = existing.find((n) => n.id === id);
+    if (!target || (ownerId && target.employeeId !== ownerId)) return false;
   }
+  const result = existing.filter((n) => n.id !== id);
+  if (result.length === existing.length) return false;
+  if (await isDbAvailable()) { await pgSetCollection('notifications', { notifications: result }); }
+  else { await ensureDataDir(); await fs.writeFile(NOTIFICATIONS_FILE, JSON.stringify({ notifications: result }, null, 2), 'utf-8'); }
   return true;
+}
+
+export async function updateNotification(id: string, updates: Partial<Notification>, ownerId?: string): Promise<Notification | null> {
+  const existing = await getNotifications();
+  const idx = existing.findIndex((n) => n.id === id && (!ownerId || n.employeeId === ownerId));
+  if (idx === -1) return null;
+  existing[idx] = { ...existing[idx], ...updates };
+  if (await isDbAvailable()) { await pgSetCollection('notifications', { notifications: existing }); }
+  else { await ensureDataDir(); await fs.writeFile(NOTIFICATIONS_FILE, JSON.stringify({ notifications: existing }, null, 2), 'utf-8'); }
+  return existing[idx];
 }
