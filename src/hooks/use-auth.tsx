@@ -34,7 +34,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
-    const { data } = await apiClient.post('/auth/login', { email, password });
+    const { data } = await apiClient.post('/api/auth/login', { email, password });
     const { accessToken, refreshToken, user: userData } = data.data ?? data;
     localStorage.setItem('accessToken', accessToken);
     if (refreshToken) localStorage.setItem('refreshToken', refreshToken);
