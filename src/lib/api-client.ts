@@ -1,7 +1,7 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || '',
   headers: { 'Content-Type': 'application/json' },
   timeout: 30000,
 });
