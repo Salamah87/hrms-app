@@ -27,7 +27,6 @@ export async function buildScope(user: AuthUser): Promise<ScopeFilter> {
     };
   }
 
-  // employee or default
   return {
     companyId: user.companyId,
     employeeId: user.id,
@@ -38,7 +37,7 @@ export function canAccessEmployee(user: AuthUser, targetEmployeeId: string, scop
   if (scope.allAccess) return true;
   if (typeof scope.employeeId === 'string') return scope.employeeId === targetEmployeeId;
   if (Array.isArray(scope.employeeId)) return scope.employeeId.includes(targetEmployeeId);
-  return false;
+  return true;
 }
 
 export async function filterEmployeesByScope(user: AuthUser, employees: any[]): Promise<any[]> {
