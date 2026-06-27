@@ -1,0 +1,12 @@
+{
+  "components": [
+    { "id": "comp-1", "name": "Basic Salary", "type": "earning", "calculationType": "fixed", "value": 0, "isTaxable": true, "isActive": true },
+    { "id": "comp-2", "name": "Housing Allowance", "type": "earning", "calculationType": "percentage", "value": 30, "isTaxable": true, "isActive": true },
+    { "id": "comp-3", "name": "Transport Allowance", "type": "earning", "calculationType": "percentage", "value": 10, "isTaxable": true, "isActive": true },
+    { "id": "comp-4", "name": "Overtime", "type": "earning", "calculationType": "fixed", "value": 0, "isTaxable": true, "isActive": true },
+    { "id": "comp-5", "name": "Commission", "type": "earning", "calculationType": "percentage", "value": 5, "isTaxable": true, "isActive": true },
+    { "id": "comp-6", "name": "GOSI", "type": "deduction", "calculationType": "percentage", "value": 9.75, "isTaxable": false, "isActive": true },
+    { "id": "comp-7", "name": "Income Tax", "type": "deduction", "calculationType": "percentage", "value": 10, "isTaxable": false, "isActive": true },
+    { "id": "comp-8", "name": "Loan Deduction", "type": "deduction", "calculationType": "fixed", "value": 0, "isTaxable": false, "isActive": false }
+  ]
+}

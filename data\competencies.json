@@ -1,0 +1,82 @@
+[
+  {
+    "id": "comp-1",
+    "name": "Teamwork",
+    "description": "Collaborates effectively with team members",
+    "category": "Behavioural",
+    "isActive": true,
+    "createdAt": "2026-06-27T01:37:41.523Z"
+  },
+  {
+    "id": "comp-2",
+    "name": "Communication",
+    "description": "Communicates clearly and effectively",
+    "category": "Behavioural",
+    "isActive": true,
+    "createdAt": "2026-06-27T01:37:41.523Z"
+  },
+  {
+    "id": "comp-3",
+    "name": "Leadership",
+    "description": "Leads and inspires others",
+    "category": "Leadership",
+    "isActive": true,
+    "createdAt": "2026-06-27T01:37:41.523Z"
+  },
+  {
+    "id": "comp-4",
+    "name": "Problem Solving",
+    "description": "Analyses and resolves complex problems",
+    "category": "Cognitive",
+    "isActive": true,
+    "createdAt": "2026-06-27T01:37:41.523Z"
+  },
+  {
+    "id": "comp-5",
+    "name": "Adaptability",
+    "description": "Adapts to changing circumstances",
+    "category": "Behavioural",
+    "isActive": true,
+    "createdAt": "2026-06-27T01:37:41.523Z"
+  },
+  {
+    "id": "comp-6",
+    "name": "Technical Skills",
+    "description": "Applies technical knowledge effectively",
+    "category": "Technical",
+    "isActive": true,
+    "createdAt": "2026-06-27T01:37:41.523Z"
+  },
+  {
+    "id": "comp-7",
+    "name": "Initiative",
+    "description": "Takes proactive action without waiting",
+    "category": "Behavioural",
+    "isActive": true,
+    "createdAt": "2026-06-27T01:37:41.523Z"
+  },
+  {
+    "id": "comp-8",
+    "name": "Customer Focus",
+    "description": "Puts customer needs first",
+    "category": "Behavioural",
+    "isActive": true,
+    "createdAt": "2026-06-27T01:37:41.523Z"
+  },
+  {
+    "id": "comp-9",
+    "name": "Quality of Work",
+    "description": "Delivers high-quality output consistently",
+    "category": "Performance",
+    "isActive": true,
+    "createdAt": "2026-06-27T01:37:41.523Z"
+  },
+  {
+    "id": "comp-10",
+    "name": "Time Management",
+    "description": "Manages time and priorities effectively",
+    "category": "Performance",
+    "isActive": true,
+    "createdAt": "2026-06-27T01:37:41.523Z"
+  }
+]

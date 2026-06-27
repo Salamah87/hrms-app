@@ -1,0 +1,40 @@
+{
+  "cycles": [
+    {
+      "id": "pc-1782522151467-z3nlp",
+      "companyId": "company-1",
+      "name": "2",
+      "type": "quarterly",
+      "startDate": "2026-06-01",
+      "endDate": "2026-06-27",
+      "status": "active",
+      "reviewStyle": "all",
+      "createdAt": "2026-06-27T01:02:31.467Z",
+      "updatedAt": "2026-06-27T01:34:49.218Z"
+    }
+  ],
+  "goals": [
+    {
+      "id": "goal-1782524049785-9gy1g",
+      "employeeId": "emp-1",
+      "cycleId": "pc-1782522151467-z3nlp",
+      "title": "getting customer 30",
+      "description": "to get customs ",
+      "type": "objective",
+      "targetValue": 20,
+      "currentValue": 0,
+      "unit": "20",
+      "weight": 100,
+      "status": "on_track",
+      "dueDate": "2026-06-27",
+      "createdAt": "2026-06-27T01:34:09.785Z",
+      "updatedAt": "2026-06-27T01:34:09.786Z"
+    }
+  ],
+  "kpis": [],
+  "reviews": [],
+  "reviewSections": [],
+  "feedback": [],
+  "pips": [],
+  "pipCheckIns": []
+}

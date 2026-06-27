@@ -1,0 +1,154 @@
+{
+  "jobs": [
+    {
+      "id": "job-1782519845034-h5t7g",
+      "companyId": "company-1",
+      "title": "assistant ",
+      "location": "london",
+      "type": "full_time",
+      "description": "nothing",
+      "requirements": "all is good ",
+      "salaryMin": 1000,
+      "salaryMax": 1500,
+      "status": "open",
+      "closesAt": "2026-06-30",
+      "createdAt": "2026-06-27T00:24:05.034Z",
+      "updatedAt": "2026-06-27T00:26:28.177Z",
+      "publishedAt": "2026-06-27T00:26:28.171Z"
+    }
+  ],
+  "candidates": [
+    {
+      "id": "cand-1782520600510-s33ds",
+      "companyId": "company-1",
+      "firstName": "salamah",
+      "lastName": "anbeeh",
+      "email": "s.elfaituri@hti.ly",
+      "phone": "0911168015",
+      "currentTitle": "",
+      "currentCompany": "",
+      "location": "",
+      "source": "careers-page",
+      "createdAt": "2026-06-27T00:36:40.511Z"
+    }
+  ],
+  "pipelineStages": [
+    {
+      "id": "stage-job-1782519845034-h5t7g-0",
+      "companyId": "company-1",
+      "jobId": "job-1782519845034-h5t7g",
+      "name": "Applied",
+      "stageOrder": 1,
+      "autoAdvance": false,
+      "disqualifyOnFail": false,
+      "createdAt": "2026-06-27T00:24:05.034Z"
+    },
+    {
+      "id": "stage-job-1782519845034-h5t7g-1",
+      "companyId": "company-1",
+      "jobId": "job-1782519845034-h5t7g",
+      "name": "AI Screening",
+      "stageOrder": 2,
+      "autoAdvance": false,
+      "disqualifyOnFail": false,
+      "createdAt": "2026-06-27T00:24:05.034Z"
+    },
+    {
+      "id": "stage-job-1782519845034-h5t7g-2",
+      "companyId": "company-1",
+      "jobId": "job-1782519845034-h5t7g",
+      "name": "CV Review",
+      "stageOrder": 3,
+      "autoAdvance": false,
+      "disqualifyOnFail": false,
+      "createdAt": "2026-06-27T00:24:05.034Z"
+    },
+    {
+      "id": "stage-job-1782519845034-h5t7g-3",
+      "companyId": "company-1",
+      "jobId": "job-1782519845034-h5t7g",
+      "name": "Phone Screen",
+      "stageOrder": 4,
+      "autoAdvance": false,
+      "disqualifyOnFail": false,
+      "createdAt": "2026-06-27T00:24:05.034Z"
+    },
+    {
+      "id": "stage-job-1782519845034-h5t7g-4",
+      "companyId": "company-1",
+      "jobId": "job-1782519845034-h5t7g",
+      "name": "Technical Interview",
+      "stageOrder": 5,
+      "autoAdvance": false,
+      "disqualifyOnFail": false,
+      "createdAt": "2026-06-27T00:24:05.034Z"
+    },
+    {
+      "id": "stage-job-1782519845034-h5t7g-5",
+      "companyId": "company-1",
+      "jobId": "job-1782519845034-h5t7g",
+      "name": "Final Interview",
+      "stageOrder": 6,
+      "autoAdvance": false,
+      "disqualifyOnFail": false,
+      "createdAt": "2026-06-27T00:24:05.034Z"
+    },
+    {
+      "id": "stage-job-1782519845034-h5t7g-6",
+      "companyId": "company-1",
+      "jobId": "job-1782519845034-h5t7g",
+      "name": "Reference Check",
+      "stageOrder": 7,
+      "autoAdvance": false,
+      "disqualifyOnFail": false,
+      "createdAt": "2026-06-27T00:24:05.034Z"
+    },
+    {
+      "id": "stage-job-1782519845034-h5t7g-7",
+      "companyId": "company-1",
+      "jobId": "job-1782519845034-h5t7g",
+      "name": "Offer Sent",
+      "stageOrder": 8,
+      "autoAdvance": false,
+      "disqualifyOnFail": false,
+      "createdAt": "2026-06-27T00:24:05.034Z"
+    },
+    {
+      "id": "stage-job-1782519845034-h5t7g-8",
+      "companyId": "company-1",
+      "jobId": "job-1782519845034-h5t7g",
+      "name": "Hired",
+      "stageOrder": 9,
+      "autoAdvance": false,
+      "disqualifyOnFail": false,
+      "createdAt": "2026-06-27T00:24:05.034Z"
+    },
+    {
+      "id": "stage-job-1782519845034-h5t7g-9",
+      "companyId": "company-1",
+      "jobId": "job-1782519845034-h5t7g",
+      "name": "Rejected",
+      "stageOrder": 10,
+      "autoAdvance": false,
+      "disqualifyOnFail": false,
+      "createdAt": "2026-06-27T00:24:05.034Z"
+    }
+  ],
+  "applications": [
+    {
+      "id": "app-1782520600516-7g6hy",
+      "jobId": "job-1782519845034-h5t7g",
+      "candidateId": "cand-1782520600510-s33ds",
+      "source": "careers-page",
+      "stageId": "stage-job-1782519845034-h5t7g-0",
+      "status": "active",
+      "coverLetter": "",
+      "createdAt": "2026-06-27T00:36:40.516Z",
+      "updatedAt": "2026-06-27T00:41:02.935Z",
+      "aiScore": 28,
+      "aiSummary": "salamah anbeeh is a professional with ~3 years of experience. Limited match for this role. Missing: all."
+    }
+  ],
+  "interviews": [],
+  "offers": []
+}

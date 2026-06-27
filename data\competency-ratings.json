@@ -1,0 +1,56 @@
+[
+  {
+    "id": "cr-1782526303811-5l22v",
+    "reviewId": "pc-1782522151467-z3nlp",
+    "competencyId": "comp-1",
+    "rating": 3
+  },
+  {
+    "id": "cr-1782526306080-zbs1z",
+    "reviewId": "pc-1782522151467-z3nlp",
+    "competencyId": "comp-2",
+    "rating": 2
+  },
+  {
+    "id": "cr-1782526307232-dx37l",
+    "reviewId": "pc-1782522151467-z3nlp",
+    "competencyId": "comp-4",
+    "rating": 3
+  },
+  {
+    "id": "cr-1782526308637-7voll",
+    "reviewId": "pc-1782522151467-z3nlp",
+    "competencyId": "comp-3",
+    "rating": 3
+  },
+  {
+    "id": "cr-1782526309745-mo8vx",
+    "reviewId": "pc-1782522151467-z3nlp",
+    "competencyId": "comp-5",
+    "rating": 5
+  },
+  {
+    "id": "cr-1782526311395-s9kc9",
+    "reviewId": "pc-1782522151467-z3nlp",
+    "competencyId": "comp-6",
+    "rating": 1
+  },
+  {
+    "id": "cr-1782526312422-usf9c",
+    "reviewId": "pc-1782522151467-z3nlp",
+    "competencyId": "comp-8",
+    "rating": 1
+  },
+  {
+    "id": "cr-1782526313483-qocii",
+    "reviewId": "pc-1782522151467-z3nlp",
+    "competencyId": "comp-10",
+    "rating": 3
+  },
+  {
+    "id": "cr-1782526315054-weap3",
+    "reviewId": "pc-1782522151467-z3nlp",
+    "competencyId": "comp-9",
+    "rating": 5
+  }
+]
