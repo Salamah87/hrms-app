@@ -20,7 +20,7 @@ interface AuditEntry {
 export async function logAudit(entry: Omit<AuditEntry, 'id' | 'timestamp'>): Promise<void> {
   try {
     const log: AuditEntry = {
-      id: udit--,
+      id: 'audit-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8),
       timestamp: new Date().toISOString(),
       ...entry,
     };
@@ -32,10 +32,9 @@ export async function logAudit(entry: Omit<AuditEntry, 'id' | 'timestamp'>): Pro
       entries = [];
     }
     entries.push(log);
-    // Keep last 1000 entries
     if (entries.length > 1000) entries = entries.slice(-1000);
     await fs.writeFile(AUDIT_FILE, JSON.stringify(entries, null, 2), 'utf-8');
   } catch {
-    // silently fail - audit should never block the request
+    // silently fail
   }
 }

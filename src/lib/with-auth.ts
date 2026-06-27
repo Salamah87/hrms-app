@@ -28,16 +28,15 @@ export function withAuth(handler: RouteHandler, options: WithAuthOptions = {}) {
         const response = await handler(request, user);
         if (audit) {
           const url = new URL(request.url);
-          logAudit({ userId: user.id, email: user.email, action: ${request.method}_, resource: url.pathname, resourceId: null, success: true, ip: request.headers.get('x-forwarded-for') || 'unknown' });
+          logAudit({ userId: user.id, email: user.email, action: request.method + '_' + url.pathname, resource: url.pathname, resourceId: null, success: true, ip: request.headers.get('x-forwarded-for') || 'unknown' });
         }
         return response;
       } catch (err) {
-        logAudit({ userId: user.id, email: user.email, action: ${request.method}_, resource: new URL(request.url).pathname, resourceId: null, success: false, ip: request.headers.get('x-forwarded-for') || 'unknown', details: String(err) });
+        logAudit({ userId: user.id, email: user.email, action: request.method + '_' + new URL(request.url).pathname, resource: new URL(request.url).pathname, resourceId: null, success: false, ip: request.headers.get('x-forwarded-for') || 'unknown', details: String(err) });
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
       }
     }
 
-    // Public route - no auth needed
     return handler(request, null as any);
   };
 }
