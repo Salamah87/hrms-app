@@ -65,37 +65,45 @@ export async function getEmployeeFromToken(token: string): Promise<object | null
   return employees.find((e: { id: string }) => e.id === id) || null;
 }
 
-export async function generateRefreshToken(userId: string): Promise<string> {
-  const token = crypto.randomBytes(48).toString('hex');
-  let tokens: Record<string, { userId: string; createdAt: string; used: boolean }> = {};
+// In-memory refresh token store (falls back when filesystem is read-only)
+const refreshTokenStore: Record<string, { userId: string; createdAt: string; used: boolean }> = {};
+let refreshTokenStoreLoaded = false;
+
+async function ensureRefreshStore(): Promise<void> {
+  if (refreshTokenStoreLoaded) return;
   try {
     const raw = await fs.readFile(REFRESH_FILE, 'utf-8');
-    tokens = JSON.parse(raw);
+    Object.assign(refreshTokenStore, JSON.parse(raw));
   } catch {}
-  tokens[token] = { userId, createdAt: new Date().toISOString(), used: false };
-  await fs.writeFile(REFRESH_FILE, JSON.stringify(tokens, null, 2), 'utf-8');
+  refreshTokenStoreLoaded = true;
+}
+
+async function persistRefreshStore(): Promise<void> {
+  try {
+    await fs.writeFile(REFRESH_FILE, JSON.stringify(refreshTokenStore, null, 2), 'utf-8');
+  } catch {
+    // read-only filesystem - in-memory only is fine
+  }
+}
+
+export async function generateRefreshToken(userId: string): Promise<string> {
+  await ensureRefreshStore();
+  const token = crypto.randomBytes(48).toString('hex');
+  refreshTokenStore[token] = { userId, createdAt: new Date().toISOString(), used: false };
+  await persistRefreshStore();
   return token;
 }
 
 export async function rotateRefreshToken(oldToken: string): Promise<{ accessToken: string; refreshToken: string } | null> {
-  let tokens: Record<string, { userId: string; createdAt: string; used: boolean }> = {};
-  try {
-    const raw = await fs.readFile(REFRESH_FILE, 'utf-8');
-    tokens = JSON.parse(raw);
-  } catch {
-    return null;
-  }
-
-  const entry = tokens[oldToken];
+  await ensureRefreshStore();
+  const entry = refreshTokenStore[oldToken];
   if (!entry || entry.used) return null;
 
-  // Mark as used (rotation)
   entry.used = true;
-  tokens[oldToken] = entry;
+  refreshTokenStore[oldToken] = entry;
 
-  // Generate new pair
   const newRefresh = await generateRefreshToken(entry.userId);
-  await fs.writeFile(REFRESH_FILE, JSON.stringify(tokens, null, 2), 'utf-8');
+  await persistRefreshStore();
 
   const accessToken = signToken({ sub: entry.userId });
   return { accessToken, refreshToken: newRefresh };

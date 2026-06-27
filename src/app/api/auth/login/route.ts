@@ -14,18 +14,41 @@ const RATE_LIMIT_FILE = path.join(DATA_DIR, 'rate-limits.json');
 const MAX_ATTEMPTS = 5;
 const LOCKOUT_MINUTES = 15;
 
-async function checkRateLimit(email: string): Promise<{ allowed: boolean; remaining: number }> {
-  let limits: Record<string, { attempts: number; lastAttempt: string }> = {};
+// In-memory rate limit store (falls back when filesystem is read-only)
+const rateLimitStore: Record<string, { attempts: number; lastAttempt: number }> = {};
+let rateLimitStoreLoaded = false;
+
+async function ensureRateStore(): Promise<void> {
+  if (rateLimitStoreLoaded) return;
   try {
     const raw = await fs.readFile(RATE_LIMIT_FILE, 'utf-8');
-    limits = JSON.parse(raw);
+    const fileLimits = JSON.parse(raw);
+    for (const [email, data] of Object.entries(fileLimits)) {
+      rateLimitStore[email] = { attempts: data.attempts, lastAttempt: new Date(data.lastAttempt).getTime() };
+    }
   } catch {}
+  rateLimitStoreLoaded = true;
+}
 
-  const entry = limits[email];
+async function persistRateStore(): Promise<void> {
+  try {
+    const obj: Record<string, { attempts: number; lastAttempt: string }> = {};
+    for (const [email, data] of Object.entries(rateLimitStore)) {
+      obj[email] = { attempts: data.attempts, lastAttempt: new Date(data.lastAttempt).toISOString() };
+    }
+    await fs.writeFile(RATE_LIMIT_FILE, JSON.stringify(obj, null, 2), 'utf-8');
+  } catch {
+    // read-only filesystem - in-memory only is fine
+  }
+}
+
+async function checkRateLimit(email: string): Promise<{ allowed: boolean; remaining: number }> {
+  await ensureRateStore();
+  const entry = rateLimitStore[email];
   const now = Date.now();
 
   if (entry) {
-    const elapsed = (now - new Date(entry.lastAttempt).getTime()) / 60000;
+    const elapsed = (now - entry.lastAttempt) / 60000;
     if (elapsed > LOCKOUT_MINUTES) {
       entry.attempts = 0;
     }
@@ -38,22 +61,16 @@ async function checkRateLimit(email: string): Promise<{ allowed: boolean; remain
 }
 
 async function recordAttempt(email: string, success: boolean): Promise<void> {
-  let limits: Record<string, { attempts: number; lastAttempt: string }> = {};
-  try {
-    const raw = await fs.readFile(RATE_LIMIT_FILE, 'utf-8');
-    limits = JSON.parse(raw);
-  } catch {}
-
+  await ensureRateStore();
   if (success) {
-    delete limits[email];
+    delete rateLimitStore[email];
   } else {
-    limits[email] = {
-      attempts: (limits[email]?.attempts || 0) + 1,
-      lastAttempt: new Date().toISOString(),
-    };
+    const entry = rateLimitStore[email] || { attempts: 0, lastAttempt: 0 };
+    entry.attempts += 1;
+    entry.lastAttempt = Date.now();
+    rateLimitStore[email] = entry;
   }
-
-  await fs.writeFile(RATE_LIMIT_FILE, JSON.stringify(limits, null, 2), 'utf-8');
+  await persistRateStore();
 }
 
 export async function POST(request: NextRequest) {
@@ -75,13 +92,13 @@ export async function POST(request: NextRequest) {
 
     if (!credential) {
       await recordAttempt(email, false);
-      return NextResponse.json({ error: 'Credential not found for: ' + email }, { status: 401 });
+      return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
     }
 
     const passwordHash = crypto.createHash('sha256').update(password).digest('hex');
     if (passwordHash !== credential.passwordHash) {
       await recordAttempt(email, false);
-      return NextResponse.json({ error: 'Password mismatch' }, { status: 401 });
+      return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
     }
 
     await recordAttempt(email, true);
@@ -119,6 +136,6 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (err) {
-    return NextResponse.json({ error: 'Server error: ' + String(err) }, { status: 500 });
+    return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
   }
 }
