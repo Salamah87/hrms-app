@@ -27,4 +27,9 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = {
+  ...nextConfig,
+  experimental: {
+    outputFileTracing: false,
+  },
+};
