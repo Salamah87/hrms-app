@@ -63,8 +63,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
     }
 
-    // Rate limit check
-    const { allowed, remaining } = await checkRateLimit(email);
+    const { allowed } = await checkRateLimit(email);
     if (!allowed) {
       await logAudit({ userId: 'unknown', email, action: 'LOGIN_LOCKED', resource: 'auth', resourceId: null, success: false, ip: request.headers.get('x-forwarded-for') || 'unknown' });
       return NextResponse.json({ error: 'Too many attempts. Try again in 15 minutes.' }, { status: 429 });
@@ -76,13 +75,13 @@ export async function POST(request: NextRequest) {
 
     if (!credential) {
       await recordAttempt(email, false);
-      return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
+      return NextResponse.json({ error: 'Credential not found for: ' + email }, { status: 401 });
     }
 
     const passwordHash = crypto.createHash('sha256').update(password).digest('hex');
     if (passwordHash !== credential.passwordHash) {
       await recordAttempt(email, false);
-      return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
+      return NextResponse.json({ error: 'Password mismatch' }, { status: 401 });
     }
 
     await recordAttempt(email, true);
@@ -120,6 +119,6 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (err) {
-    return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
+    return NextResponse.json({ error: 'Server error: ' + String(err) }, { status: 500 });
   }
 }
