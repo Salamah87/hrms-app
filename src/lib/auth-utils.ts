@@ -24,10 +24,10 @@ export function signToken(payload: object): string {
 
   const signature = crypto
     .createHmac('sha256', SECRET)
-    .update(${headerEncoded}.)
+    .update(headerEncoded + '.' + payloadEncoded)
     .digest('base64url');
 
-  return ${headerEncoded}..;
+  return headerEncoded + '.' + payloadEncoded + '.' + signature;
 }
 
 export function verifyToken(token: string): object | null {
@@ -39,7 +39,7 @@ export function verifyToken(token: string): object | null {
 
     const expectedSignature = crypto
       .createHmac('sha256', SECRET)
-      .update(${headerEncoded}.)
+      .update(headerEncoded + '.' + payloadEncoded)
       .digest('base64url');
 
     if (signature !== expectedSignature) return null;
