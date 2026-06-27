@@ -1,0 +1,12 @@
+node_modules/
+.next/
+.env.local
+.env
+.env*.local
+*.log
+*.tsbuildinfo
+next-env.d.ts
+check-icons.js
+fix-renders.js
+fix-types.js
+start-dev.bat
